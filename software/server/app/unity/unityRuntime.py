@@ -5,6 +5,7 @@ from flask import Blueprint, current_app, session
 from flask import redirect, url_for, request
 from flask import jsonify, send_file
 import random
+import json
 
 
 bp = Blueprint("unity-runtime", __name__, url_prefix="/unity-runtime")
@@ -22,6 +23,8 @@ def unity_tracking():
 
     data = request.form['tracking']
 
-    print(data)
+
+    dataDict = json.loads(data)
+    print(dataDict)
 
     return {"retval":1 }
