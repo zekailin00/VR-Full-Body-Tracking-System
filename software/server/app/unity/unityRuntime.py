@@ -9,10 +9,19 @@ import random
 
 bp = Blueprint("unity-runtime", __name__, url_prefix="/unity-runtime")
 
-@bp.route("/headset-data", methods=["GET"])
-def unity_get_test():
+@bp.route("/pose-data", methods=["GET"])
+def unity_pose():
 
     return {
     "obj1":1,
     "obj2":2
     }
+
+@bp.route("/headset-data", methods=["POST"])
+def unity_tracking():
+
+    data = request.form['tracking']
+
+    print(data)
+
+    return {"retval":1 }
