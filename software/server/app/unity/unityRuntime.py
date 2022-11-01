@@ -1,11 +1,10 @@
 import os, sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from flask import Blueprint, current_app, session
-from flask import redirect, url_for, request
-from flask import jsonify, send_file
-import random
+from flask import Blueprint
+from flask import request
 import json
+
+from algorithm import VR_data_in
 
 
 bp = Blueprint("unity-runtime", __name__, url_prefix="/unity-runtime")
@@ -22,9 +21,16 @@ def unity_pose():
 def unity_tracking():
 
     data = request.form['tracking']
+    d = json.loads(data)
 
+    VR_data_in(
+        [d["HRX"], d["HRY"], d["HRZ"]], 
+        [d["HPX"], d["HPY"], d["HPZ"]], 
+        [d["LRX"], d["LRY"], d["LRZ"]], 
+        [d["LPX"], d["LPY"], d["LPZ"]], 
+        [d["RRX"], d["RRY"], d["RRZ"]], 
+        [d["RPX"], d["RPY"], d["RPZ"]])
 
-    dataDict = json.loads(data)
-    print(dataDict)
+    #print(dataDict)
 
     return {"retval":1 }
