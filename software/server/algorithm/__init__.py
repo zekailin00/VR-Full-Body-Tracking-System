@@ -17,6 +17,10 @@ def VR_data_in(head_rot, head_pos, left_hand_rot, left_hand_pos, right_hand_rot,
 
     din.right_hand_rot = right_hand_rot
     din.right_hand_pos = right_hand_pos
+
+def Sensor_data_in(imu1_accin, imu1_gyroin):
+    din.imu1_acc = imu1_accin
+    din.imu1_gyro = imu1_gyroin
     
 
 def algorithm():
