@@ -1,1 +1,1 @@
-firmware here
+firmware written on Arduino for pulling acc and gyro data from BNO055, send it to ESP8266 through I2C, and send it to local server via wifi
