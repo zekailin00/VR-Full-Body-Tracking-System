@@ -11,8 +11,8 @@ bp = Blueprint("tracker-runtime", __name__, url_prefix="/tracker-runtime")
 
 @bp.route("/GyroAcc1", methods=["POST"])
 def unity_tracking():
-    print("received")
-    d = request.data
-    print(d)
-    Sensor_data_in([d["HRX"], d["HRY"], d["HRZ"]], [d["HPX"], d["HPY"], d["HPZ"]])
+    #print("received")
+    d = request.data.decode().split(",")
+    #print(d[0], d[1], d[2], d[3], d[4], d[5], d[6])
+    Sensor_data_in([d[0]], [d[1], d[2], d[3]], [d[4], d[5], d[6]])
     return {"retval":1 }

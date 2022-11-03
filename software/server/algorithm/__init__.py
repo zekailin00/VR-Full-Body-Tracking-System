@@ -18,10 +18,31 @@ def VR_data_in(head_rot, head_pos, left_hand_rot, left_hand_pos, right_hand_rot,
     din.right_hand_rot = right_hand_rot
     din.right_hand_pos = right_hand_pos
 
-def Sensor_data_in(imu1_accin, imu1_gyroin):
-    din.imu1_acc = imu1_accin
-    din.imu1_gyro = imu1_gyroin
-    
+def Sensor_data_in(imuNum, imu_accin, imu_gyroin):
+    if(imuNum == "imu1"):
+        din.imu1_acc = imu_accin
+        din.imu1_gyro = imu_gyroin
+    elif(imuNum == "imu2"):
+        din.imu2_acc = imu_accin
+        din.imu2_gyro = imu_gyroin
+    elif(imuNum == "imu3"):
+        din.imu3_acc = imu_accin
+        din.imu3_gyro = imu_gyroin
+    elif(imuNum == "imu4"):
+        din.imu4_acc = imu_accin
+        din.imu4_gyro = imu_gyroin
+    elif(imuNum == "imu5"):
+        din.imu5_acc = imu_accin
+        din.imu5_gyro = imu_gyroin
+    elif(imuNum == "imu6"):
+        din.imu6_acc = imu_accin
+        din.imu6_gyro = imu_gyroin
+    elif(imuNum == "imu7"):
+        din.imu7_acc = imu_accin
+        din.imu7_gyro = imu_gyroin
+    elif(imuNum == "imu8"):
+        din.imu8_acc = imu_accin
+        din.imu8_gyro = imu_gyroin
 
 def algorithm():
     print(buffer)

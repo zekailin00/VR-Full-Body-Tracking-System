@@ -24,7 +24,7 @@ void setup(void)
   bno.setExtCrystalUse(true);
 
   //for wifi
-  WiFi.begin("TP-Link_D8B1", "zekailin");   //WiFi connection
+  WiFi.begin("437 wifi", "437family437");   //WiFi connection
  
   while (WiFi.status() != WL_CONNECTED) {  //Wait for the WiFI connection completion
     delay(500);
@@ -39,20 +39,20 @@ void loop(void)
   imu::Vector<3> gyro = bno.getVector(Adafruit_BNO055::VECTOR_GYROSCOPE);
   
   /* Display the floating point data */
-  // Serial.print("Xacc: ");
-  // Serial.print(acc.x());
-  // Serial.print(" Yacc: ");
-  // Serial.print(acc.y());
-  // Serial.print(" Zacc: ");
-  // Serial.print(acc.z());
-  // Serial.println("");
-  // Serial.print("Xgyro: ");
-  // Serial.print(gyro.x());
-  // Serial.print(" Ygyro: ");
-  // Serial.print(gyro.y());
-  // Serial.print(" Zgyro: ");
-  // Serial.print(gyro.z());
-  // Serial.println("");
+  Serial.print("Xacc: ");
+  Serial.print(acc.x());
+  Serial.print(" Yacc: ");
+  Serial.print(acc.y());
+  Serial.print(" Zacc: ");
+  Serial.print(acc.z());
+  Serial.println("");
+  Serial.print("Xgyro: ");
+  Serial.print(gyro.x());
+  Serial.print(" Ygyro: ");
+  Serial.print(gyro.y());
+  Serial.print(" Zgyro: ");
+  Serial.print(gyro.z());
+  Serial.println("");
 
   delay(100);
   //wifi
@@ -61,15 +61,15 @@ void loop(void)
     HTTPClient http;    //Declare object of class HTTPClient
     WiFiClient client;
     
-    http.begin(client, "http://192.168.56.1:5000/tracker-runtime/GyroAcc1");      //Specify request destination
-    http.addHeader("Content-Type", "application/json");  //Specify content-type header
-    String test = ((String)acc.x() + " " + (String)acc.y() + " " + (String)acc.z() + " " + (String)gyro.x() + " " + (String)gyro.y() + " " + (String)gyro.z());
+    http.begin(client, "http://10.0.0.160:5000/tracker-runtime/GyroAcc1");      //Specify request destination
+    http.addHeader("Content-Type", "text/plain");  //Specify content-type header
+    String test = ("imu1," + (String)acc.x() + "," + (String)acc.y() + "," + (String)acc.z() + "," + (String)gyro.x() + "," + (String)gyro.y() + "," + (String)gyro.z());
     int httpCode = http.POST(test);
     String payload = http.getString();                  //Get the response payload
-    // Serial.println("return: ");
-    // Serial.println(httpCode);   //Print HTTP return code
-    // Serial.println("pay: ");
-    // Serial.println(payload);    //Print request response payload
+    Serial.println("return: ");
+    Serial.println(httpCode);   //Print HTTP return code
+    Serial.println("pay: ");
+    Serial.println(payload);    //Print request response payload
     http.end();  //Close connection
   } 
   else {

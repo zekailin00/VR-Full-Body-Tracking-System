@@ -8,6 +8,7 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
 
     log = logging.getLogger('werkzeug')
+    # comment out if server debug required
     log.setLevel(logging.ERROR)
     
     from app.tracker import trackerRuntime
