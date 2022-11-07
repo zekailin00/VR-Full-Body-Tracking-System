@@ -5,6 +5,7 @@ import time
 import numpy as np
 
 import algorithm.input_struct as din
+import algorithm.output_struct as dout
 
 buffer = []
 
@@ -44,8 +45,19 @@ def Sensor_data_in(imuNum, imu_accin, imu_gyroin):
         din.imu8_acc = imu_accin
         din.imu8_gyro = imu_gyroin
 
-def algorithm():
-    print(buffer)
+def algorithm(deltaTime):
+    # detalTime: time in seconds that has passed since this function is called last time 
+
+    # din: tracking data given to the algorithm. 
+    # To access fields: din.head_rot, din.imu1_acc... See from input_struct file.
+
+    # dout: joints data computed from tracking data
+    # To access fields: din.left_upper_leg, din.waist... See from output_struct file.
+
+    # numpy as np is imported. If others are used, list them in requirements.txt
+
+    
+
 
 def test():
     print("test!")
