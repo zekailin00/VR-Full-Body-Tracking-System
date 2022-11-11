@@ -1,22 +1,8 @@
 #include <Wire.h>
-#include <Adafruit_Sensor.h>
-#include <Adafruit_BNO055.h>
-#include <utility/imumaths.h>
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
-#include <ArduinoJson.h>
-
-//LSM6DSOX:
 #include <Adafruit_LSM6DSOX.h>
-
-// For SPI mode, we need a CS pin
-#define LSM_CS 10
-// For software-SPI mode we need SCK/MOSI/MISO pins
-#define LSM_SCK 13
-#define LSM_MISO 12
-#define LSM_MOSI 11
 Adafruit_LSM6DSOX sox;
-//LSM6DX end
 
 void setup(void) 
 {
@@ -171,12 +157,20 @@ void loop(void)
  
     HTTPClient http;    //Declare object of class HTTPClient
     WiFiClient client;
-    
-    //http.begin(client, "http://192.168.1.100:5000/tracker-runtime/GyroAcc1");
-    http.begin(client, "http://10.0.0.160:5000/tracker-runtime/GyroAcc1");      //Specify request destination
+
+    //Specify request destination
+    //http.begin(client, "http://192.168.1.100:5000/tracker-runtime/GyroAcc1"); //at zekai's home
+    http.begin(client, "http://10.0.0.160:5000/tracker-runtime/GyroAcc1");      //at hsiuting's home
     http.addHeader("Content-Type", "text/plain");  //Specify content-type header
-    String test = ("imu1," + (String)accel.acceleration.x + "," + (String)accel.acceleration.y + "," + (String)accel.acceleration.z + "," + (String)gyro.gyro.x + "," + (String)gyro.gyro.y + "," + (String)gyro.gyro.z);
-    int httpCode = http.POST(test);
+
+    //remember to change imu number for each imu
+    String imudata = ("imu1," + (String)accel.acceleration.x + "," \
+                              + (String)accel.acceleration.y + "," \
+                              + (String)accel.acceleration.z + "," \
+                              + (String)gyro.gyro.x + "," \
+                              + (String)gyro.gyro.y + "," \
+                              + (String)gyro.gyro.z);
+    int httpCode = http.POST(imudata);
     String payload = http.getString();                  //Get the response payload
     Serial.println("return: ");
     Serial.println(httpCode);   //Print HTTP return code
@@ -187,5 +181,5 @@ void loop(void)
   else {
     Serial.println("Error in WiFi connection");
   }
-  delay(3000);  //Send a request every 30 seconds
+  delay(3000);  //adjust frequency here
 }
