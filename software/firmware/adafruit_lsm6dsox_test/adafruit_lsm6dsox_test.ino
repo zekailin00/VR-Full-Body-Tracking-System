@@ -1,12 +1,6 @@
-#include <Wire.h>
-#include <Adafruit_Sensor.h>
-#include <Adafruit_BNO055.h>
-#include <utility/imumaths.h>
-#include <ESP8266HTTPClient.h>
-#include <ESP8266WiFi.h>
-#include <ArduinoJson.h>
+// Basic demo for accelerometer & gyro readings from Adafruit
+// LSM6DSOX sensor
 
-//LSM6DSOX:
 #include <Adafruit_LSM6DSOX.h>
 
 // For SPI mode, we need a CS pin
@@ -15,21 +9,9 @@
 #define LSM_SCK 13
 #define LSM_MISO 12
 #define LSM_MOSI 11
-Adafruit_LSM6DSOX sox;
-//LSM6DX end
 
-void setup(void) 
-{
-  Serial.begin(115200);
-  /* Initialise the sensor */
-  
-  //for wifi
-  //WiFi.begin("TP-Link_D8B1", "zekailin");
-  WiFi.begin("437 wifi", "437family437");   //WiFi connection
-  while (WiFi.status() != WL_CONNECTED) {  //Wait for the WiFI connection completion
-    delay(500);
-    Serial.println("Waiting for connection");
-  }
+Adafruit_LSM6DSOX sox;
+void setup(void) {
   Serial.begin(115200);
   while (!Serial)
     delay(10); // will pause Zero, Leonardo, etc until serial console opens
@@ -44,6 +26,8 @@ void setup(void)
   Serial.println("LSM6DSOX Found!");
 
   // sox.setAccelRange(LSM6DS_ACCEL_RANGE_2_G);
+  Serial.print("A
+  ccelerometer range set to: ");
   switch (sox.getAccelRange()) {
   case LSM6DS_ACCEL_RANGE_2_G:
     Serial.println("+-2G");
@@ -158,34 +142,35 @@ void setup(void)
   }
 }
 
-void loop(void) 
-{
-  /* Get a new sensor event */ 
+void loop() {
+
+  //  /* Get a new normalized sensor event */
   sensors_event_t accel;
   sensors_event_t gyro;
   sensors_event_t temp;
   sox.getEvent(&accel, &gyro, &temp);
 
-  //wifi
-  if (WiFi.status() == WL_CONNECTED) { //Check WiFi connection status
- 
-    HTTPClient http;    //Declare object of class HTTPClient
-    WiFiClient client;
-    
-    //http.begin(client, "http://192.168.1.100:5000/tracker-runtime/GyroAcc1");
-    http.begin(client, "http://10.0.0.160:5000/tracker-runtime/GyroAcc1");      //Specify request destination
-    http.addHeader("Content-Type", "text/plain");  //Specify content-type header
-    String test = ("imu1," + (String)accel.acceleration.x + "," + (String)accel.acceleration.y + "," + (String)accel.acceleration.z + "," + (String)gyro.gyro.x + "," + (String)gyro.gyro.y + "," + (String)gyro.gyro.z);
-    int httpCode = http.POST(test);
-    String payload = http.getString();                  //Get the response payload
-    Serial.println("return: ");
-    Serial.println(httpCode);   //Print HTTP return code
-    Serial.println("pay: ");
-    Serial.println(payload);    //Print request response payload
-    http.end();  //Close connection
-  } 
-  else {
-    Serial.println("Error in WiFi connection");
-  }
-  delay(3000);  //Send a request every 30 seconds
+  Serial.print("\t\tTemperature ");
+  Serial.print(temp.temperature);
+  Serial.println(" deg C");
+
+  /* Display the results (acceleration is measured in m/s^2) */
+  Serial.print("\t\tAccel X: ");
+  Serial.print(accel.acceleration.x);
+  Serial.print(" \tY: ");
+  Serial.print(accel.acceleration.y);
+  Serial.print(" \tZ: ");
+  Serial.print(accel.acceleration.z);
+  Serial.println(" m/s^2 ");
+
+  /* Display the results (rotation is measured in rad/s) */
+  Serial.print("\t\tGyro X: ");
+  Serial.print(gyro.gyro.x);
+  Serial.print(" \tY: ");
+  Serial.print(gyro.gyro.y);
+  Serial.print(" \tZ: ");
+  Serial.print(gyro.gyro.z);
+  Serial.println(" radians/s ");
+  Serial.println();
+  delay(100);
 }
