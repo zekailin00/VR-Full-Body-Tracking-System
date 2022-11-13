@@ -9,7 +9,6 @@ import algorithm.output_struct as dout
 # import input_struct as din
 # import output_struct as dout
 
-buffer = []
 calibration = True
 halfchestwidth = 1
 spinelength = 1
@@ -113,7 +112,6 @@ def get_FK_calculated_rpy(chest_rpy,upper_arm_rpy,isleft,lower_arm_0):
         pitch_cal = lower_arm_0[1] + np.arcsin(p[2]/np.linalg.norm(p))*180.0/np.pi
     return np.array([roll_cal,pitch_cal,yaw_cal])
 
-
 def algorithm(deltaTime):
     # detalTime: time in seconds that has passed since this function is called last time 
 
@@ -121,7 +119,7 @@ def algorithm(deltaTime):
     # To access fields: din.head_rot, din.imu1_acc... See from input_struct file.
 
     # dout: joints data computed from tracking data
-    # To access fields: din.left_upper_leg, din.waist... See from output_struct file.
+    # To access fields: out.left_upper_leg, out.waist... See from output_struct file.
 
     # numpy as np is imported. If others are used, list them in requirements.txt
 
@@ -206,22 +204,59 @@ def algorithm(deltaTime):
     imu6_gyro_prev = din.imu6_gyro
     imu7_gyro_prev = din.imu7_gyro
     imu8_gyro_prev = din.imu8_gyro
-        
-def printdout():
-    print("waist: ",dout.waist)
-    print("left_upper_leg: ",dout.left_upper_leg)
-    print("right_upper_leg: ",dout.right_upper_leg)
-    print("left_lower_leg: ",dout.left_lower_leg)
-    print("right_lower_leg: ",dout.right_lower_leg)
-    print("chest: ",dout.chest)
-    print("left_upper_arm: ",dout.left_upper_arm)
-    print("right_upper_arm: ",dout.right_upper_arm)
-    print("left_lower_arm: ",dout.left_lower_arm)
-    print("right_lower_arm: ",dout.right_lower_arm)
-    print("left_hand: ",dout.left_hand)
-    print("right_hand: ",dout.right_hand)
-    print("head: ",dout.head)  
 
+def intialize():
+    x = threading.Thread(target=thread_function, args=(1,))
+    x.daemon = True
+    x.start()
+
+def consumer_thread(_):
+    current_time = time.time()
+    while(True):
+        prev_time = current_time
+        current_time = time.time()
+        print("Time elapsed: ", current_time - prev_time)
+        algorithm(current_time - prev_time)
+
+
+"""
+-----------------------------------------
+--------- Test functions below ----------
+""" 
+
+def thread_function(name):
+    while(True):
+        logging.info("Thread %s: starting", name)
+        print(din.head_rot)
+        print(din.head_pos)
+
+        print(din.left_hand_rot)
+        print(din.left_hand_pos)
+
+        print(din.right_hand_rot)
+        print(din.right_hand_pos)
+
+        print(din.imu1_acc)
+        print(din.imu1_gyro)
+        print("\n")
+
+        time.sleep(1)
+        logging.info("Thread %s: finishing", name)
+
+def printdout():
+    print("waist: ", dout.waist)
+    print("left_upper_leg: ", dout.left_upper_leg)
+    print("right_upper_leg: ", dout.right_upper_leg)
+    print("left_lower_leg: ", dout.left_lower_leg)
+    print("right_lower_leg: ", dout.right_lower_leg)
+    print("chest: ", dout.chest)
+    print("left_upper_arm: ", dout.left_upper_arm)
+    print("right_upper_arm: ", dout.right_upper_arm)
+    print("left_lower_arm: ", dout.left_lower_arm)
+    print("right_lower_arm: ", dout.right_lower_arm)
+    print("left_hand: ", dout.left_hand)
+    print("right_hand: ", dout.right_hand)
+    print("head: ", dout.head)  
 
 def test():
     print("test!")
@@ -285,32 +320,6 @@ def test():
     din.right_hand_rot = np.array([0 ,0 ,0])
     algorithm(0.01)
     printdout()
-
-def intialize():
-    x = threading.Thread(target=thread_function, args=(1,))
-    x.daemon = True
-    x.start()
-
-
-def thread_function(name):
-    while(True):
-        logging.info("Thread %s: starting", name)
-        # print(buffer)
-        # print(din.head_rot)
-        # print(din.head_pos)
-
-        # print(din.left_hand_rot)
-        # print(din.left_hand_pos)
-
-        # print(din.right_hand_rot)
-        # print(din.right_hand_pos)
-
-        print(din.imu1_acc)
-        print(din.imu1_gyro)
-        print("\n")
-
-        time.sleep(1)
-        logging.info("Thread %s: finishing", name)
 
 if __name__ == "__main__":
     test()
