@@ -4,10 +4,10 @@ import time
 
 import numpy as np
 
-# import algorithm.input_struct as din
-# import algorithm.output_struct as dout
-import input_struct as din
-import output_struct as dout
+import algorithm.input_struct as din
+import algorithm.output_struct as dout
+# import input_struct as din
+# import output_struct as dout
 
 buffer = []
 calibration = True
