@@ -219,7 +219,7 @@ def algorithm(deltaTime):
     imu8_gyro_prev = din.imu8_gyro
 
 def intialize():
-    x = threading.Thread(target=consumer_thread, args=(1,))
+    x = threading.Thread(target=thread_function, args=(1,))
     x.daemon = True
     x.start()
 
@@ -264,6 +264,20 @@ def thread_function(name):
 
         print(din.imu1_acc)
         print(din.imu1_gyro)
+        print(din.imu2_acc)
+        print(din.imu2_gyro)
+        print(din.imu3_acc)
+        print(din.imu3_gyro)
+        print(din.imu4_acc)
+        print(din.imu4_gyro)
+        print(din.imu5_acc)
+        print(din.imu5_gyro)
+        print(din.imu6_acc)
+        print(din.imu6_gyro)
+        print(din.imu7_acc)
+        print(din.imu7_gyro)
+        print(din.imu8_acc)
+        print(din.imu8_gyro)
         print("\n")
 
         time.sleep(1)
