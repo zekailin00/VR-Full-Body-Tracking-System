@@ -10,8 +10,8 @@ void setup(void)
   /* Initialise the sensor */
   
   //for wifi
-  //WiFi.begin("TP-Link_D8B1", "zekailin");
-  WiFi.begin("437 wifi", "437family437");   //WiFi connection
+  WiFi.begin("TP-Link_D8B1", "zekailin");
+  //WiFi.begin("437 wifi", "437family437");   //WiFi connection
   while (WiFi.status() != WL_CONNECTED) {  //Wait for the WiFI connection completion
     delay(500);
     Serial.println("Waiting for connection");
@@ -160,11 +160,12 @@ void loop(void)
 
     //Specify request destination
     //http.begin(client, "http://192.168.1.100:5000/tracker-runtime/GyroAcc1"); //at zekai's home
-    http.begin(client, "http://10.0.0.160:5000/tracker-runtime/GyroAcc1");      //at hsiuting's home
+    http.begin(client, "http://192.168.1.140:5000/tracker-runtime/GyroAcc1"); //xps at zekai's home
+    //http.begin(client, "http://10.0.0.160:5000/tracker-runtime/GyroAcc1");      //at hsiuting's home
     http.addHeader("Content-Type", "text/plain");  //Specify content-type header
 
     //remember to change imu number for each imu
-    String imudata = ("imu1," + (String)accel.acceleration.x + "," \
+    String imudata = ("imu7," + (String)accel.acceleration.x + "," \
                               + (String)accel.acceleration.y + "," \
                               + (String)accel.acceleration.z + "," \
                               + (String)gyro.gyro.x + "," \
@@ -181,5 +182,5 @@ void loop(void)
   else {
     Serial.println("Error in WiFi connection");
   }
-  delay(3000);  //adjust frequency here
+  delay(10);  //adjust frequency here
 }
