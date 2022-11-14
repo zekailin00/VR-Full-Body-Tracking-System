@@ -13,19 +13,19 @@ bp = Blueprint("unity-runtime", __name__, url_prefix="/unity-runtime")
 def unity_pose():
 
     return {
-    "left_upper_leg": dout.left_lower_leg,
-    "left_lower_leg": dout.left_lower_leg,
-    "right_upper_leg": dout.right_upper_leg,
-    "right_lower_leg": dout.right_lower_leg,
-    "left_upper_arm": dout.left_upper_arm,
-    "left_lower_arm": dout.left_lower_arm,
-    "left_hand": dout.left_hand,
-    "right_upper_arm": dout.right_upper_arm,
-    "right_lower_arm": dout.right_lower_arm,
-    "right_hand": dout.right_hand,
-    "waist": dout.waist,
-    "chest": dout.chest,
-    "head": dout.head
+    "left_upper_leg": dout.left_lower_leg.tolist(),
+    "left_lower_leg": dout.left_lower_leg.tolist(),
+    "right_upper_leg": dout.right_upper_leg.tolist(),
+    "right_lower_leg": dout.right_lower_leg.tolist(),
+    "left_upper_arm": dout.left_upper_arm.tolist(),
+    "left_lower_arm": dout.left_lower_arm.tolist(),
+    "left_hand": dout.left_hand.tolist(),
+    "right_upper_arm": dout.right_upper_arm.tolist(),
+    "right_lower_arm": dout.right_lower_arm.tolist(),
+    "right_hand": dout.right_hand.tolist(),
+    "waist": dout.waist.tolist(),
+    "chest": dout.chest.tolist(),
+    "head": dout.head.tolist()
     }
 
 @bp.route("/headset-data", methods=["POST"])
