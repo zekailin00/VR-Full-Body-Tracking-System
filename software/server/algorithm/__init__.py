@@ -36,30 +36,32 @@ def VR_data_in(head_rot, head_pos, left_hand_rot, left_hand_pos, right_hand_rot,
 
 def Sensor_data_in(imuNum, imu_accin, imu_gyroin):
     mutex.acquire()
+    #print("check1",type(imu_accin),type(imu_accin[0]))
     if(imuNum == ["imu1"]):
-        din.imu1_acc = imu_accin
-        din.imu1_gyro = imu_gyroin
+        din.imu1_acc = np.array([float(i) for i in imu_accin])
+        din.imu1_gyro = np.array([float(i) for i in imu_gyroin])
+        # print("check1",type(din.imu1_acc),type(din.imu1_acc[0]))
     elif(imuNum == ["imu2"]):
-        din.imu2_acc = imu_accin
-        din.imu2_gyro = imu_gyroin
+        din.imu2_acc = np.array([float(i) for i in imu_accin])
+        din.imu2_gyro = np.array([float(i) for i in imu_gyroin])
     elif(imuNum == ["imu3"]):
-        din.imu3_acc = imu_accin
-        din.imu3_gyro = imu_gyroin
+        din.imu3_acc = np.array([float(i) for i in imu_accin])
+        din.imu3_gyro = np.array([float(i) for i in imu_gyroin])
     elif(imuNum == ["imu4"]):
-        din.imu4_acc = imu_accin
-        din.imu4_gyro = imu_gyroin
+        din.imu4_acc = np.array([float(i) for i in imu_accin])
+        din.imu4_gyro = np.array([float(i) for i in imu_gyroin])
     elif(imuNum == ["imu5"]):
-        din.imu5_acc = imu_accin
-        din.imu5_gyro = imu_gyroin
+        din.imu5_acc = np.array([float(i) for i in imu_accin])
+        din.imu5_gyro = np.array([float(i) for i in imu_gyroin])
     elif(imuNum == ["imu6"]):
-        din.imu6_acc = imu_accin
-        din.imu6_gyro = imu_gyroin
+        din.imu6_acc = np.array([float(i) for i in imu_accin])
+        din.imu6_gyro = np.array([float(i) for i in imu_gyroin])
     elif(imuNum == ["imu7"]):
-        din.imu7_acc = imu_accin
-        din.imu7_gyro = imu_gyroin
+        din.imu7_acc = np.array([float(i) for i in imu_accin])
+        din.imu7_gyro = np.array([float(i) for i in imu_gyroin])
     elif(imuNum == ["imu8"]):
-        din.imu8_acc = imu_accin
-        din.imu8_gyro = imu_gyroin
+        din.imu8_acc = np.array([float(i) for i in imu_accin])
+        din.imu8_gyro = np.array([float(i) for i in imu_gyroin])
     mutex.release()
 
 def get_imu_measured_rpy(acc,gyro,prev_gyro,rpy_0,cur_angle,deltaTime):
@@ -154,17 +156,17 @@ def algorithm(deltaTime):
         # calibration phase, get halfchestwidth, spinelength, armlength
         global halfchestwidth, spinelength, armlength, necklength
         print("move controller to waist")
-        time.sleep(3)
+        time.sleep(6)
         waist_pos = (din.head_pos[0], (din.left_hand_pos[1]+din.right_hand_pos[1])/2, din.head_pos[2])
         print("move controller to shoulder")
-        time.sleep(3)
+        time.sleep(6)
         left_shoulder_pos = (din.left_hand_pos[0], din.left_hand_pos[1], din.head_pos[2])
         right_shoulder_pos = (din.right_hand_pos[0], din.right_hand_pos[1], din.head_pos[2])
         halfchestwidth = (right_shoulder_pos[0] - left_shoulder_pos[0])/2
         spinelength = (right_shoulder_pos[1] + left_shoulder_pos[1])/2 - waist_pos[1]
         necklength = din.head_pos[1] - (right_shoulder_pos[1] + left_shoulder_pos[1])/2
         print("T-pose")
-        time.sleep(3)
+        time.sleep(6)
         armlength = (din.right_hand_pos[0] - din.left_hand_pos[0] - 2 * halfchestwidth) / 4
         # reset gyroscope angle to initial global pitch
         dout.waist[1] = waist_0[1]
@@ -219,7 +221,7 @@ def algorithm(deltaTime):
     imu8_gyro_prev = din.imu8_gyro
 
 def intialize():
-    x = threading.Thread(target=thread_function, args=(1,))
+    x = threading.Thread(target=consumer_thread, args=(1,))
     x.daemon = True
     x.start()
 
@@ -242,7 +244,8 @@ def consumer_thread(_):
             mutex.acquire()
             algorithm(current_time - prev_time)
             mutex.release()
-            print("Time elapsed: ", current_time - prev_time)
+            # print("Time elapsed: ", current_time - prev_time)
+            printdout()
 
 
 """
