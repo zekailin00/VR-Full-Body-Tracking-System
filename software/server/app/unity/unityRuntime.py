@@ -13,7 +13,7 @@ bp = Blueprint("unity-runtime", __name__, url_prefix="/unity-runtime")
 def unity_pose():
 
     return {
-    "left_upper_leg": dout.left_lower_leg.tolist(),
+    "left_upper_leg": dout.left_upper_leg.tolist(),
     "left_lower_leg": dout.left_lower_leg.tolist(),
     "right_upper_leg": dout.right_upper_leg.tolist(),
     "right_lower_leg": dout.right_lower_leg.tolist(),
