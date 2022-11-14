@@ -165,7 +165,7 @@ void loop(void)
     http.addHeader("Content-Type", "text/plain");  //Specify content-type header
 
     //remember to change imu number for each imu
-    String imudata = ("imu7," + (String)accel.acceleration.x + "," \
+    String imudata = ("imu2," + (String)accel.acceleration.x + "," \
                               + (String)accel.acceleration.y + "," \
                               + (String)accel.acceleration.z + "," \
                               + (String)gyro.gyro.x + "," \
