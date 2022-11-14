@@ -1,6 +1,6 @@
 from flask import Flask
 import logging
-from app import calibration
+from algorithm import begin_algorithm
 
 def create_app(test_config=None):
     # create and configure the app
@@ -32,7 +32,7 @@ def create_app(test_config=None):
     #curl -v http://127.0.0.1:5000/begin-calibration
     @app.route('/begin-calibration')
     def begin_calibration():
-        global calibration
-        calibration = True
+        begin_algorithm()
+        return {"res":1}
 
     return app

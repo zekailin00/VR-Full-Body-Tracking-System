@@ -9,13 +9,21 @@ import algorithm.output_struct as dout
 # import input_struct as din
 # import output_struct as dout
 
-calibration = True
+from threading import Thread, Lock
+import threading
+
+mutex = Lock()
+count = 0
+
+algo_begin = False
+calibration = False
 halfchestwidth = 1
 spinelength = 1
 armlength = 1
 necklength = 1
 
 def VR_data_in(head_rot, head_pos, left_hand_rot, left_hand_pos, right_hand_rot, right_hand_pos):
+    mutex.acquire()
     din.head_rot = head_rot
     din.head_pos = head_pos
 
@@ -24,8 +32,10 @@ def VR_data_in(head_rot, head_pos, left_hand_rot, left_hand_pos, right_hand_rot,
 
     din.right_hand_rot = right_hand_rot
     din.right_hand_pos = right_hand_pos
+    mutex.release()
 
 def Sensor_data_in(imuNum, imu_accin, imu_gyroin):
+    mutex.acquire()
     if(imuNum == ["imu1"]):
         din.imu1_acc = imu_accin
         din.imu1_gyro = imu_gyroin
@@ -50,6 +60,7 @@ def Sensor_data_in(imuNum, imu_accin, imu_gyroin):
     elif(imuNum == ["imu8"]):
         din.imu8_acc = imu_accin
         din.imu8_gyro = imu_gyroin
+    mutex.release()
 
 def get_imu_measured_rpy(acc,gyro,prev_gyro,rpy_0,cur_angle,deltaTime):
     # convert radian to degree using *180.0/np.pi
@@ -138,6 +149,7 @@ def algorithm(deltaTime):
     right_upper_arm_0 = np.array([-75,-81,71])
     left_lower_arm_0 = np.array([-75,81,-71])    # setting it to global rpy of left upper arm
     right_lower_arm_0 = np.array([-75,-81,71])   # setting it to global rpy of right upper arm
+    global calibration
     if calibration:
         # calibration phase, get halfchestwidth, spinelength, armlength
         global halfchestwidth, spinelength, armlength, necklength
@@ -172,7 +184,8 @@ def algorithm(deltaTime):
         imu5_gyro_prev = np.array([0,0,0])
         imu6_gyro_prev = np.array([0,0,0])
         imu7_gyro_prev = np.array([0,0,0])
-        imu8_gyro_prev = np.array([0,0,0])
+        imu8_gyro_prev = np.array([0,0,0]) 
+        calibration = False
         return
     # local rpy of waist
     dout.waist = get_imu_measured_rpy(din.imu1_acc,din.imu1_gyro,imu1_gyro_prev,waist_0,dout.waist[1],deltaTime)
@@ -206,17 +219,30 @@ def algorithm(deltaTime):
     imu8_gyro_prev = din.imu8_gyro
 
 def intialize():
-    x = threading.Thread(target=thread_function, args=(1,))
+    x = threading.Thread(target=consumer_thread, args=(1,))
     x.daemon = True
     x.start()
+
+def begin_algorithm():
+    global algo_begin, calibration
+    algo_begin = True
+    calibration = True
+    print("Begin algorithm and calibration: ", algo_begin)
 
 def consumer_thread(_):
     current_time = time.time()
     while(True):
-        prev_time = current_time
-        current_time = time.time()
-        print("Time elapsed: ", current_time - prev_time)
-        algorithm(current_time - prev_time)
+        global algo_begin
+        if (algo_begin):
+            prev_time = current_time
+            current_time = time.time()
+            while (current_time - prev_time < 0.007):
+                # Limit computation frame rate
+                current_time = time.time()
+            mutex.acquire()
+            algorithm(current_time - prev_time)
+            mutex.release()
+            print("Time elapsed: ", current_time - prev_time)
 
 
 """
