@@ -120,8 +120,6 @@ def get_FK_calculated_rpy(chest_rpy,upper_arm_rpy,isleft,lower_arm_0):
     p_elbow = np.array([-g[0,3]+din.head_pos[0], g[1,3]+din.head_pos[1]-(necklength+spinelength), g[2,3]+din.head_pos[2]])
     p_hand = din.left_hand_pos if isleft else din.right_hand_pos
     p = p_hand - p_elbow
-    if isleft:
-        print("leftcheck:",p_elbow,p_hand,armlength)
     roll_cal = lower_arm_0[0]
     # note: xyz rpy rotation is same as zyx euler rotation, also convert radian to degree with *180.0/np.pi
     # if not isleft:
@@ -132,11 +130,15 @@ def get_FK_calculated_rpy(chest_rpy,upper_arm_rpy,isleft,lower_arm_0):
     #     pitch_cal = lower_arm_0[1] + np.arcsin(p[2]/np.linalg.norm(p))*180.0/np.pi
     ##--------------- actually we are using euler zxy, and pitch is inverted ---------------##
     if not isleft:
-        yaw_cal = lower_arm_0[2] + np.arctan2(p[1],p[0])*180.0/np.pi
+        yaw_cal = lower_arm_0[2] + np.arcsin(p[1]/np.linalg.norm(p))*180.0/np.pi
         pitch_cal = lower_arm_0[1] + np.arcsin(p[2]/np.linalg.norm(p))*180.0/np.pi
     else:
-        yaw_cal = lower_arm_0[2] + np.arctan2(p[1],p[0])*180.0/np.pi - 180
+        yaw_cal = lower_arm_0[2] - np.arcsin(p[1]/np.linalg.norm(p))*180.0/np.pi
         pitch_cal = lower_arm_0[1] - np.arcsin(p[2]/np.linalg.norm(p))*180.0/np.pi
+    if isleft:
+        print("leftcheck:",p_elbow,p_hand,p,armlength,yaw_cal,lower_arm_0[2], np.arcsin(p[1]/np.linalg.norm(p))*180.0/np.pi)
+    else:
+        print("rightcheck:",p_elbow)
     return np.array([roll_cal,pitch_cal,yaw_cal])
 
 def algorithm(deltaTime):
@@ -411,7 +413,7 @@ def test():
     imu8_gyro_prev = np.array([0,0,0])
     din.imu1_acc = np.array([-9.8, 0, 0])
     din.imu1_gyro = np.array([0 ,0 ,0])
-    din.imu2_acc = np.array([-9.8/np.sqrt(2), 0, 9.8/np.sqrt(2)])
+    din.imu2_acc = np.array([-9.8, 0, 0])
     din.imu2_gyro = np.array([0 ,0 ,0])
     din.imu3_acc = np.array([-9.8, 0, 0])
     din.imu3_gyro = np.array([0 ,0 ,0])
@@ -423,11 +425,11 @@ def test():
     din.imu6_gyro = np.array([0 ,0 ,0])
     din.imu7_acc = np.array([-9.8, 0, 0])
     din.imu7_gyro = np.array([0 ,0 ,0])
-    din.imu8_acc = np.array([-9.8, 0, 0])
+    din.imu8_acc = np.array([0, 9.8, 0])
     din.imu8_gyro = np.array([0 ,0 ,0])
     din.head_pos = np.array([0 ,1.8, 0])
     din.head_rot = np.array([0 ,0 ,0])
-    din.left_hand_pos = np.array([-0.8 ,1.7 ,0])
+    din.left_hand_pos = np.array([-0.6 ,1.7 ,0.1])
     din.left_hand_rot = np.array([0 ,0 ,0])
     din.right_hand_pos = np.array([0.8 ,1.7 ,0])
     din.right_hand_rot = np.array([0 ,0 ,0])
