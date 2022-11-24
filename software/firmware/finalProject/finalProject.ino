@@ -165,7 +165,7 @@ void loop(void)
     http.addHeader("Content-Type", "text/plain");  //Specify content-type header
 
     //remember to change imu number for each imu
-    String imudata = ("imu2," + (String)accel.acceleration.x + "," \
+    String imudata = ("imu7," + (String)accel.acceleration.x + "," \
                               + (String)accel.acceleration.y + "," \
                               + (String)accel.acceleration.z + "," \
                               + (String)gyro.gyro.x + "," \
@@ -177,10 +177,11 @@ void loop(void)
     Serial.println(httpCode);   //Print HTTP return code
     Serial.println("pay: ");
     Serial.println(payload);    //Print request response payload
+    Serial.println(imudata);
     http.end();  //Close connection
   } 
   else {
     Serial.println("Error in WiFi connection");
   }
-  delay(10);  //adjust frequency here
+  delay(33);  //adjust frequency here
 }
