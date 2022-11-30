@@ -22,6 +22,11 @@ spinelength = 1
 armlength = 1
 necklength = 1
 
+# data buffer
+BUFFER_SIZE=10
+imu1_acc_buff, imu2_acc_buff, imu3_acc_buff, imu4_acc_buff, imu5_acc_buff, imu6_acc_buff, imu7_acc_buff, imu8_acc_buff, imu9_acc_buff, imu10_acc_buff = [],[],[],[],[],[],[],[],[],[]
+imu1_gyro_buff, imu2_gyro_buff, imu3_gyro_buff, imu4_gyro_buff, imu5_gyro_buff, imu6_gyro_buff, imu7_gyro_buff, imu8_gyro_buff, imu9_gyro_buff, imu10_gyro_buff = [],[],[],[],[],[],[],[],[],[]
+
 def VR_data_in(head_rot, head_pos, left_hand_rot, left_hand_pos, right_hand_rot, right_hand_pos):
     mutex.acquire()
     din.head_rot = head_rot
@@ -38,36 +43,95 @@ def Sensor_data_in(imuNum, imu_accin, imu_gyroin):
     mutex.acquire()
     #print("check1",type(imu_accin),type(imu_accin[0]))
     if(imuNum == ["imu1"]):
-        din.imu1_acc = np.array([float(i) for i in imu_accin])
-        din.imu1_gyro = np.array([float(i) for i in imu_gyroin])
-        # print("check1",type(din.imu1_acc),type(din.imu1_acc[0]))
+        imu1_acc_buff.append(np.array([float(i) for i in imu_accin]))
+        imu1_gyro_buff.append(np.array([float(i) for i in imu_gyroin]))
+        if len(imu1_acc_buff)>BUFFER_SIZE:
+            imu1_acc_buff.pop(0)
+        if len(imu1_gyro_buff)>BUFFER_SIZE:
+            imu1_gyro_buff.pop(0)
+        din.imu1_acc = np.average(imu1_acc_buff, axis=0)
+        din.imu1_gyro = np.average(imu1_gyro_buff, axis=0)
     elif(imuNum == ["imu2"]):
-        din.imu2_acc = np.array([float(i) for i in imu_accin])
-        din.imu2_gyro = np.array([float(i) for i in imu_gyroin])
+        imu2_acc_buff.append(np.array([float(i) for i in imu_accin]))
+        imu2_gyro_buff.append(np.array([float(i) for i in imu_gyroin]))
+        if len(imu2_acc_buff)>BUFFER_SIZE:
+            imu2_acc_buff.pop(0)
+        if len(imu2_gyro_buff)>BUFFER_SIZE:
+            imu2_gyro_buff.pop(0)
+        din.imu2_acc = np.average(imu2_acc_buff, axis=0)
+        din.imu2_gyro = np.average(imu2_gyro_buff, axis=0)
     elif(imuNum == ["imu3"]):
-        din.imu3_acc = np.array([float(i) for i in imu_accin])
-        din.imu3_gyro = np.array([float(i) for i in imu_gyroin])
+        imu3_acc_buff.append(np.array([float(i) for i in imu_accin]))
+        imu3_gyro_buff.append(np.array([float(i) for i in imu_gyroin]))
+        if len(imu3_acc_buff)>BUFFER_SIZE:
+            imu3_acc_buff.pop(0)
+        if len(imu3_gyro_buff)>BUFFER_SIZE:
+            imu3_gyro_buff.pop(0)
+        din.imu3_acc = np.average(imu3_acc_buff, axis=0)
+        din.imu3_gyro = np.average(imu3_gyro_buff, axis=0)
     elif(imuNum == ["imu4"]):
-        din.imu4_acc = np.array([float(i) for i in imu_accin])
-        din.imu4_gyro = np.array([float(i) for i in imu_gyroin])
+        imu4_acc_buff.append(np.array([float(i) for i in imu_accin]))
+        imu4_gyro_buff.append(np.array([float(i) for i in imu_gyroin]))
+        if len(imu4_acc_buff)>BUFFER_SIZE:
+            imu4_acc_buff.pop(0)
+        if len(imu4_gyro_buff)>BUFFER_SIZE:
+            imu4_gyro_buff.pop(0)
+        din.imu4_acc = np.average(imu4_acc_buff, axis=0)
+        din.imu4_gyro = np.average(imu4_gyro_buff, axis=0)
     elif(imuNum == ["imu5"]):
-        din.imu5_acc = np.array([float(i) for i in imu_accin])
-        din.imu5_gyro = np.array([float(i) for i in imu_gyroin])
+        imu5_acc_buff.append(np.array([float(i) for i in imu_accin]))
+        imu5_gyro_buff.append(np.array([float(i) for i in imu_gyroin]))
+        if len(imu5_acc_buff)>BUFFER_SIZE:
+            imu5_acc_buff.pop(0)
+        if len(imu5_gyro_buff)>BUFFER_SIZE:
+            imu5_gyro_buff.pop(0)
+        din.imu5_acc = np.average(imu5_acc_buff, axis=0)
+        din.imu5_gyro = np.average(imu5_gyro_buff, axis=0)
     elif(imuNum == ["imu6"]):
-        din.imu6_acc = np.array([float(i) for i in imu_accin])
-        din.imu6_gyro = np.array([float(i) for i in imu_gyroin])
+        imu6_acc_buff.append(np.array([float(i) for i in imu_accin]))
+        imu6_gyro_buff.append(np.array([float(i) for i in imu_gyroin]))
+        if len(imu6_acc_buff)>BUFFER_SIZE:
+            imu6_acc_buff.pop(0)
+        if len(imu6_gyro_buff)>BUFFER_SIZE:
+            imu6_gyro_buff.pop(0)
+        din.imu6_acc = np.average(imu6_acc_buff, axis=0)
+        din.imu6_gyro = np.average(imu6_gyro_buff, axis=0)
     elif(imuNum == ["imu7"]):
-        din.imu7_acc = np.array([float(i) for i in imu_accin])
-        din.imu7_gyro = np.array([float(i) for i in imu_gyroin])
+        imu7_acc_buff.append(np.array([float(i) for i in imu_accin]))
+        imu7_gyro_buff.append(np.array([float(i) for i in imu_gyroin]))
+        if len(imu7_acc_buff)>BUFFER_SIZE:
+            imu7_acc_buff.pop(0)
+        if len(imu7_gyro_buff)>BUFFER_SIZE:
+            imu7_gyro_buff.pop(0)
+        din.imu7_acc = np.average(imu7_acc_buff, axis=0)
+        din.imu7_gyro = np.average(imu7_gyro_buff, axis=0)
     elif(imuNum == ["imu8"]):
-        din.imu8_acc = np.array([float(i) for i in imu_accin])
-        din.imu8_gyro = np.array([float(i) for i in imu_gyroin])
+        imu8_acc_buff.append(np.array([float(i) for i in imu_accin]))
+        imu8_gyro_buff.append(np.array([float(i) for i in imu_gyroin]))
+        if len(imu8_acc_buff)>BUFFER_SIZE:
+            imu8_acc_buff.pop(0)
+        if len(imu8_gyro_buff)>BUFFER_SIZE:
+            imu8_gyro_buff.pop(0)
+        din.imu8_acc = np.average(imu8_acc_buff, axis=0)
+        din.imu8_gyro = np.average(imu8_gyro_buff, axis=0)
     elif(imuNum == ["imu9"]):
-        din.imu9_acc = np.array([float(i) for i in imu_accin])
-        din.imu9_gyro = np.array([float(i) for i in imu_gyroin])
+        imu9_acc_buff.append(np.array([float(i) for i in imu_accin]))
+        imu9_gyro_buff.append(np.array([float(i) for i in imu_gyroin]))
+        if len(imu9_acc_buff)>BUFFER_SIZE:
+            imu9_acc_buff.pop(0)
+        if len(imu9_gyro_buff)>BUFFER_SIZE:
+            imu9_gyro_buff.pop(0)
+        din.imu9_acc = np.average(imu9_acc_buff, axis=0)
+        din.imu9_gyro = np.average(imu9_gyro_buff, axis=0)
     elif(imuNum == ["imu10"]):
-        din.imu10_acc = np.array([float(i) for i in imu_accin])
-        din.imu10_gyro = np.array([float(i) for i in imu_gyroin])
+        imu10_acc_buff.append(np.array([float(i) for i in imu_accin]))
+        imu10_gyro_buff.append(np.array([float(i) for i in imu_gyroin]))
+        if len(imu10_acc_buff)>BUFFER_SIZE:
+            imu10_acc_buff.pop(0)
+        if len(imu10_gyro_buff)>BUFFER_SIZE:
+            imu10_gyro_buff.pop(0)
+        din.imu10_acc = np.average(imu10_acc_buff, axis=0)
+        din.imu10_gyro = np.average(imu10_gyro_buff, axis=0)
     mutex.release()
 
 def angle_between(v1, v2):
@@ -86,14 +150,10 @@ def angle_between(v1, v2):
     return np.arccos(np.clip(np.dot(v1_u, v2_u), -1.0, 1.0))*180/np.pi
 
 
-def get_imu_measured_rpy(acc,gyro,prev_gyro,rpy_0,cur_angle,deltaTime,isleg):
+def get_imu_measured_rpy(acc,gyro,prev_gyro,rpy_0,cur_angle,deltaTime):
     # convert radian to degree using *180.0/np.pi
-    # roll_mea = rpy_0[0] - (np.arctan2(acc[0],np.sqrt(acc[1]**2+acc[2]**2))*180.0/np.pi  +  90)
     roll_mea = rpy_0[0] + (np.arctan2(np.sqrt(acc[0]**2+acc[1]**2),acc[2])*180.0/np.pi  -  90)
-    if not isleg:
-        yaw_mea = rpy_0[2] - np.arctan2(acc[1],np.sqrt(acc[0]**2+acc[2]**2))*180.0/np.pi
-    else:
-        yaw_mea = rpy_0[2] + np.arctan2(acc[1],np.sqrt(acc[0]**2+acc[2]**2))*180.0/np.pi
+    yaw_mea = rpy_0[2] - np.arctan2(acc[1],np.sqrt(acc[0]**2+acc[2]**2))*180.0/np.pi
     # pitch updates only when rotating around +g/-g, also filter small rotation
     current_rot = (np.linalg.norm(prev_gyro)+np.linalg.norm(gyro))/2
     pitch_mea = cur_angle
@@ -101,7 +161,7 @@ def get_imu_measured_rpy(acc,gyro,prev_gyro,rpy_0,cur_angle,deltaTime,isleg):
         angle_diff = angle_between(acc,gyro)
         if abs(angle_diff)<5:
             pitch_mea = cur_angle - current_rot*deltaTime*180.0/np.pi
-        elif abs(angle_diff+180)<5 or (angle_diff-180)<5:
+        elif abs(angle_diff+180)<5 or abs(angle_diff-180)<5:
             pitch_mea = cur_angle + current_rot*deltaTime*180.0/np.pi
     return np.array([roll_mea,pitch_mea,yaw_mea])
 
@@ -288,32 +348,33 @@ def algorithm(deltaTime):
         imu7_gyro_prev = np.array([0,0,0])
         imu8_gyro_prev = np.array([0,0,0]) 
         ## set initial global rpy
-        waist_0 = -get_imu_measured_rpy(din.imu1_acc,din.imu1_gyro,imu1_gyro_prev,waist_0,dout.waist[1],deltaTime,False)
-        left_upper_leg_0 = -get_imu_measured_rpy(din.imu2_acc,din.imu2_gyro,imu2_gyro_prev,left_upper_leg_0,dout.left_upper_leg[1],deltaTime,False)
-        right_upper_leg_0 = -get_imu_measured_rpy(din.imu3_acc,din.imu3_gyro,imu3_gyro_prev,right_upper_leg_0,dout.right_upper_leg[1],deltaTime,False)
-        left_lower_leg_0 =  -get_imu_measured_rpy(din.imu4_acc,din.imu4_gyro,imu4_gyro_prev,left_lower_leg_0,dout.left_lower_leg[1],deltaTime,False)
-        right_lower_leg_0 =  -get_imu_measured_rpy(din.imu5_acc,din.imu5_gyro,imu5_gyro_prev,right_lower_leg_0,dout.right_lower_leg[1],deltaTime,False)
-        chest_0 =  -get_imu_measured_rpy(din.imu6_acc,din.imu6_gyro,imu6_gyro_prev,chest_0,dout.chest[1],deltaTime,False)
-        left_upper_arm_0 = -get_imu_measured_rpy(din.imu7_acc,din.imu7_gyro,imu7_gyro_prev,left_upper_arm_0,dout.left_upper_arm[1],deltaTime,False)
-        right_upper_arm_0 = -get_imu_measured_rpy(din.imu8_acc,din.imu8_gyro,imu8_gyro_prev,right_upper_arm_0,dout.right_upper_arm[1],deltaTime,False)
+        empty_gyro = np.zeros(3)
+        waist_0 = -get_imu_measured_rpy(din.imu1_acc,empty_gyro,imu1_gyro_prev,waist_0,dout.waist[1],deltaTime)
+        left_upper_leg_0 = -get_imu_measured_rpy(din.imu2_acc,empty_gyro,imu2_gyro_prev,left_upper_leg_0,dout.left_upper_leg[1],deltaTime)
+        right_upper_leg_0 = -get_imu_measured_rpy(din.imu3_acc,empty_gyro,imu3_gyro_prev,right_upper_leg_0,dout.right_upper_leg[1],deltaTime)
+        left_lower_leg_0 =  -get_imu_measured_rpy(din.imu4_acc,empty_gyro,imu4_gyro_prev,left_lower_leg_0,dout.left_lower_leg[1],deltaTime)
+        right_lower_leg_0 =  -get_imu_measured_rpy(din.imu5_acc,empty_gyro,imu5_gyro_prev,right_lower_leg_0,dout.right_lower_leg[1],deltaTime)
+        chest_0 =  -get_imu_measured_rpy(din.imu6_acc,empty_gyro,imu6_gyro_prev,chest_0,dout.chest[1],deltaTime)
+        left_upper_arm_0 = -get_imu_measured_rpy(din.imu7_acc,empty_gyro,imu7_gyro_prev,left_upper_arm_0,dout.left_upper_arm[1],deltaTime)
+        right_upper_arm_0 = -get_imu_measured_rpy(din.imu8_acc,empty_gyro,imu8_gyro_prev,right_upper_arm_0,dout.right_upper_arm[1],deltaTime)
         calibration = 2
         mutex.release()
         return
     
     mutex.acquire()
     # local rpy of waist
-    dout.waist = get_imu_measured_rpy(din.imu1_acc,din.imu1_gyro,imu1_gyro_prev,waist_0,dout.waist[1],deltaTime,False)
+    dout.waist = get_imu_measured_rpy(din.imu1_acc,din.imu1_gyro,imu1_gyro_prev,waist_0,dout.waist[1],deltaTime)
     # local rpy of upper legs
-    dout.left_upper_leg = get_imu_measured_rpy(din.imu2_acc,din.imu2_gyro,imu2_gyro_prev,left_upper_leg_0,dout.left_upper_leg[1],deltaTime,False)
-    dout.right_upper_leg = get_imu_measured_rpy(din.imu3_acc,din.imu3_gyro,imu3_gyro_prev,right_upper_leg_0,dout.right_upper_leg[1],deltaTime,False)
+    dout.left_upper_leg = get_imu_measured_rpy(din.imu2_acc,din.imu2_gyro,imu2_gyro_prev,left_upper_leg_0,dout.left_upper_leg[1],deltaTime)
+    dout.right_upper_leg = get_imu_measured_rpy(din.imu3_acc,din.imu3_gyro,imu3_gyro_prev,right_upper_leg_0,dout.right_upper_leg[1],deltaTime)
     # local rpy of lower legs
-    dout.left_lower_leg = get_imu_measured_rpy(din.imu4_acc,din.imu4_gyro,imu4_gyro_prev,left_lower_leg_0,dout.left_lower_leg[1],deltaTime,False) - dout.left_upper_leg
-    dout.right_lower_leg = get_imu_measured_rpy(din.imu5_acc,din.imu5_gyro,imu5_gyro_prev,right_lower_leg_0,dout.right_lower_leg[1],deltaTime,False) - dout.right_upper_leg
+    dout.left_lower_leg = get_imu_measured_rpy(din.imu4_acc,din.imu4_gyro,imu4_gyro_prev,left_lower_leg_0,dout.left_lower_leg[1],deltaTime) - dout.left_upper_leg
+    dout.right_lower_leg = get_imu_measured_rpy(din.imu5_acc,din.imu5_gyro,imu5_gyro_prev,right_lower_leg_0,dout.right_lower_leg[1],deltaTime) - dout.right_upper_leg
     # local rpy of chest
-    dout.chest = get_imu_measured_rpy(din.imu6_acc,din.imu6_gyro,imu6_gyro_prev,chest_0,dout.chest[1],deltaTime,False) - dout.waist
+    dout.chest = get_imu_measured_rpy(din.imu6_acc,din.imu6_gyro,imu6_gyro_prev,chest_0,dout.chest[1],deltaTime) - dout.waist
     # local rpy of upper arms
-    dout.left_upper_arm = get_imu_measured_rpy(din.imu7_acc,din.imu7_gyro,imu7_gyro_prev,left_upper_arm_0,dout.left_upper_arm[1],deltaTime,False) - dout.waist - dout.chest
-    dout.right_upper_arm = get_imu_measured_rpy(din.imu8_acc,din.imu8_gyro,imu8_gyro_prev,right_upper_arm_0,dout.right_upper_arm[1],deltaTime,False) - dout.waist - dout.chest
+    dout.left_upper_arm = get_imu_measured_rpy(din.imu7_acc,din.imu7_gyro,imu7_gyro_prev,left_upper_arm_0,dout.left_upper_arm[1],deltaTime) - dout.waist - dout.chest
+    dout.right_upper_arm = get_imu_measured_rpy(din.imu8_acc,din.imu8_gyro,imu8_gyro_prev,right_upper_arm_0,dout.right_upper_arm[1],deltaTime) - dout.waist - dout.chest
     ##---------- for testing: disable pitch ----------##
     disable_pitch = True
     if disable_pitch:
