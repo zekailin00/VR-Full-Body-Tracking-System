@@ -32,3 +32,9 @@ imu7_gyro = np.zeros(3)
 
 imu8_acc = np.zeros(3)
 imu8_gyro = np.zeros(3)
+
+imu9_acc = np.zeros(3)
+imu9_gyro = np.zeros(3)
+
+imu10_acc = np.zeros(3)
+imu10_gyro = np.zeros(3)

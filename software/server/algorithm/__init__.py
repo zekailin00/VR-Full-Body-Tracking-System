@@ -62,6 +62,12 @@ def Sensor_data_in(imuNum, imu_accin, imu_gyroin):
     elif(imuNum == ["imu8"]):
         din.imu8_acc = np.array([float(i) for i in imu_accin])
         din.imu8_gyro = np.array([float(i) for i in imu_gyroin])
+    elif(imuNum == ["imu9"]):
+        din.imu9_acc = np.array([float(i) for i in imu_accin])
+        din.imu9_gyro = np.array([float(i) for i in imu_gyroin])
+    elif(imuNum == ["imu10"]):
+        din.imu10_acc = np.array([float(i) for i in imu_accin])
+        din.imu10_gyro = np.array([float(i) for i in imu_gyroin])
     mutex.release()
 
 def angle_between(v1, v2):
