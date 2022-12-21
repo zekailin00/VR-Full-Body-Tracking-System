@@ -459,6 +459,9 @@ def algorithm(deltaTime):
     dout.right_hand = din.right_hand_rot - dout.waist - dout.chest - dout.right_upper_arm - dout.right_lower_arm
     # local rpy of head (assuming din is global rpy)
     dout.head = din.head_rot - dout.waist - dout.chest
+
+    # dout.waist[1] = -dout.waist[1]
+    # dout.chest[1] = -dout.chest[1]
     mutex.release()
     
 
