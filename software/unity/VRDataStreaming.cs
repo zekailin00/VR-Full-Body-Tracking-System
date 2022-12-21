@@ -192,7 +192,7 @@ public class VRDataStreaming : MonoBehaviour
 
             rightUpperLeg.localRotation = Quaternion.Euler(poseData.right_upper_leg[0], poseData.right_upper_leg[1], poseData.right_upper_leg[2]);
             leftUpperLeg.localRotation = Quaternion.Euler(poseData.left_upper_leg[0], poseData.left_upper_leg[1], poseData.left_upper_leg[2]);
-
+            
             rightLowerLeg.localRotation = Quaternion.Euler(poseData.right_lower_leg[0], poseData.right_lower_leg[1], poseData.right_lower_leg[2]);
             leftLowerLeg.localRotation = Quaternion.Euler(poseData.left_lower_leg[0], poseData.left_lower_leg[1], poseData.left_lower_leg[2]);
 
@@ -205,6 +205,36 @@ public class VRDataStreaming : MonoBehaviour
             head.localRotation = Quaternion.Euler(poseData.head[0], poseData.head[1], poseData.head[2]);
             waist.localRotation = Quaternion.Euler(poseData.waist[0], poseData.waist[1], poseData.waist[2]);
             chest.localRotation = Quaternion.Euler(poseData.chest[0], poseData.chest[1], poseData.chest[2]);
+
+            // --------------------another method----------------------
+            leftUpperLeg.localRotation = Quaternion.Euler(-180, 0, 0);
+            rightUpperLeg.localRotation = Quaternion.Euler(-180, 0, 0);
+            leftLowerLeg.localRotation = Quaternion.Euler(0, 0, 0);
+            rightLowerLeg.localRotation = Quaternion.Euler(0, 0, 0);
+            leftUpperArm.localRotation = Quaternion.Euler(-75, 81, -71);
+            leftLowerArm.localRotation = Quaternion.Euler(0, 0, 0);
+            rightUpperArm.localRotation = Quaternion.Euler(-75, -81, 71);
+            rightLowerArm.localRotation = Quaternion.Euler(0, 0, 0);
+            head.localRotation = Quaternion.Euler(0, 0, 0);
+            waist.localRotation = Quaternion.Euler(0, 0, 0);
+            chest.localRotation = Quaternion.Euler(0, 0, 0);
+
+            leftUpperLeg.Rotate(poseData.left_upper_leg[0], poseData.left_upper_leg[1], poseData.left_upper_leg[2],Space.World);
+            rightUpperLeg.Rotate(poseData.right_upper_leg[0], poseData.right_upper_leg[1], poseData.right_upper_leg[2],Space.World);
+
+            leftLowerLeg.Rotate(poseData.left_lower_leg[0], poseData.left_lower_leg[1], poseData.left_lower_leg[2], Space.World);
+            rightLowerLeg.Rotate(poseData.right_lower_leg[0], poseData.right_lower_leg[1], poseData.right_lower_leg[2], Space.World);
+
+            rightUpperArm.Rotate(poseData.right_upper_arm[0], poseData.right_upper_arm[1], poseData.right_upper_arm[2], Space.World);
+            leftUpperArm.Rotate(poseData.left_upper_arm[0], poseData.left_upper_arm[1], poseData.left_upper_arm[2], Space.World);
+
+            rightLowerArm.Rotate(poseData.right_lower_arm[0], poseData.right_lower_arm[1], poseData.right_lower_arm[2], Space.World);
+            leftLowerArm.Rotate(poseData.left_lower_arm[0], poseData.left_lower_arm[1], poseData.left_lower_arm[2], Space.World);
+
+            head.Rotate(poseData.head[0], poseData.head[1], poseData.head[2], Space.World);
+            waist.Rotate(poseData.waist[0], poseData.waist[1], poseData.waist[2], Space.World);
+            chest.Rotate(poseData.chest[0], poseData.chest[1], poseData.chest[2], Space.World);
+
         }
 
         requestFinished = true;
